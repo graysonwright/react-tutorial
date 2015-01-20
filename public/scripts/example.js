@@ -10,22 +10,6 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-var converter = new Showdown.converter();
-
-var Comment = React.createClass({
-  render: function() {
-    var rawMarkup = converter.makeHtml(this.props.children.toString());
-    return (
-      <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
-      </div>
-    );
-  }
-});
-
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
     $.ajax({
@@ -93,6 +77,20 @@ var CommentList = React.createClass({
     return (
       <div className="commentList">
         {commentNodes}
+      </div>
+    );
+  }
+});
+
+var converter = new Showdown.converter();
+
+var Comment = React.createClass({
+  render: function() {
+    var rawMarkup = converter.makeHtml(this.props.children.toString());
+    return (
+      <div className="comment">
+        <span className="author">{this.props.author}:</span>
+        <span className="content" dangerouslySetInnerHTML={{__html: rawMarkup}} />
       </div>
     );
   }
