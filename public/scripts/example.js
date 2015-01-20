@@ -10,18 +10,22 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+function commentsFromAPI(url, callback) {
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    success: callback,
+    error: function(xhr, status, err) {
+      console.error(this.props.url, status, err.toString());
+    }.bind(this)
+  });
+}
+
 var CommentBox = React.createClass({
   loadCommentsFromServer: function() {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
+    commentsFromAPI(this.props.url, function(data) {
+      this.setState({data: data});
+    }.bind(this));
   },
   handleCommentSubmit: function(comment) {
     var comments = this.state.data;
